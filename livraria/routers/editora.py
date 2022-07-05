@@ -36,7 +36,7 @@ def destroy(id: int, db: SessionLocal = Depends(get_db)):
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-@router.put('/{id}')
+@router.put('/{id}', status_code=status.HTTP_202_ACCEPTED)
 def update(id: int, request: schemas.Editora, db: SessionLocal = Depends(get_db)):
     query = db.query(models.Editora).filter(models.Editora.id == id)
     if not query.first():
