@@ -6,3 +6,6 @@ class Editora(BaseModel):
 
 class Autor(BaseModel):
     nome: str
+
+class Categoria(BaseModel):
+    descricao: str
