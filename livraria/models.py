@@ -6,3 +6,8 @@ class Editora(Base):
     id = Column(Integer, primary_key = True, index = True)
     nome = Column(String)
     site = Column(String)
+
+class Autor(Base):
+    __tablename__ = 'autores'
+    id = Column(Integer, primary_key = True, index = True)
+    nome = Column(String)
