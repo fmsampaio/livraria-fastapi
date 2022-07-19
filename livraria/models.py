@@ -8,20 +8,16 @@ class Editora(Base):
     nome = Column(String)
     site = Column(String)
 
-    livros = relationship("Livro", back_populates="editora")
-
 class Autor(Base):
     __tablename__ = 'autores'
     id = Column(Integer, primary_key = True, index = True)
     nome = Column(String)
-    livros = relationship("Livro", secondary='livros_autores', back_populates='autores')
 
 class Categoria(Base):
     __tablename__ = 'categorias'
     id = Column(Integer, primary_key = True, index = True)
     descricao = Column(String)
 
-    livros = relationship("Livro", back_populates="categoria")
 
 class Livro(Base):
     __tablename__ = 'livros'
@@ -30,13 +26,13 @@ class Livro(Base):
     ISBN = Column(String)
     preco = Column(Float)
     quantidade = Column(Integer)
-    autores = relationship("Autor", secondary='livros_autores', back_populates='livros')
+    autores = relationship("Autor", secondary='livros_autores')
     
     categoria_id = Column(Integer, ForeignKey("categorias.id"))
-    categoria = relationship("Categoria", back_populates="livros")
+    categoria = relationship("Categoria")
     
     editora_id = Column(Integer, ForeignKey("editoras.id"))
-    editora = relationship("Editora", back_populates="livros")
+    editora = relationship("Editora")
 
 livros_autores = Table(
     'livros_autores', Base.metadata,

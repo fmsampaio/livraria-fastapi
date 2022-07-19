@@ -20,7 +20,7 @@ def create(request: schemas.Editora, db: SessionLocal = Depends(get_db)):
     db.refresh(new_editora)
     return new_editora
 
-@router.get('/{id}', status_code=status.HTTP_200_OK, response_model=schemas.EditoraShow)
+@router.get('/{id}', status_code=status.HTTP_200_OK)
 def retrieve(id: int, db: SessionLocal = Depends(get_db)):
     editora = db.query(models.Editora).filter(models.Editora.id == id).first()
     if not editora:

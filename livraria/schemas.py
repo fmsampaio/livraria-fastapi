@@ -38,16 +38,8 @@ class LivroShow(BaseModel):
     quantidade: int
     preco: float
     editora: Editora
-    autores: List[Autor] = []
     categoria: Categoria
-
-    class Config():
-        orm_mode = True
-
-class EditoraShow(BaseModel):
-    nome: str
-    site: str
-    livros: List[Livro] = []
+    autores: List[Autor] = []
 
     class Config():
         orm_mode = True
