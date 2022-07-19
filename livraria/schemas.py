@@ -29,10 +29,8 @@ class Livro(BaseModel):
     categoria_id: int
     autores: List[int] = []
     
-    class Config():
-        orm_mode = True
-
 class LivroShow(BaseModel):
+    id: int
     titulo: str
     ISBN: str
     quantidade: int
