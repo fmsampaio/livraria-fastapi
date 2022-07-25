@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from fastapi import APIRouter, Depends, Response, status, HTTPException
 from ..database import SessionLocal, get_db
 from .. import models, schemas
@@ -10,8 +10,39 @@ router = APIRouter(
 )
 
 @router.get('/', response_model=List[schemas.LivroShow])
-def list_all(db: SessionLocal = Depends(get_db)):
-    livros = db.query(models.Livro).all()
+def list_all(
+    categoria: Optional[int] = -1, 
+    editora: Optional[int] = -1,
+    search: Optional[str] = "",
+    maxpreco: Optional[float] = -1,
+    db: SessionLocal = Depends(get_db)
+    ):
+
+    """
+    livros_all = db.query(models.Livro).all()
+
+    livros_return = []
+    for livro in livros_all:
+        livros_return.append(livro)
+        if search != "" and not search in livro.titulo:
+            livros_return = livros_return[:-1]
+        if categoria != -1 and livro.categoria_id != categoria:
+            livros_return = livros_return[:-1]
+        if editora != -1 and livro.editora_id != editora:
+            livros_return = livros_return[:-1]           
+    """
+
+    if search != "":
+        livros = db.query(models.Livro).filter(models.Livro.titulo.contains(search)).all()
+    elif categoria != -1:
+        livros = db.query(models.Livro).filter(models.Livro.categoria_id == categoria).all()
+    elif editora != -1:
+        livros = db.query(models.Livro).filter(models.Livro.editora_id == editora).all()
+    elif maxpreco != -1:
+        livros = db.query(models.Livro).filter(models.Livro.preco <= maxpreco).all()
+    else:
+        livros = db.query(models.Livro).all()
+    
     return livros
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.LivroShow)

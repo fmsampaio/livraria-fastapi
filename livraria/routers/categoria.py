@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import APIRouter, Depends, Response, status, HTTPException
 
 from livraria.routers import utils
@@ -10,8 +11,11 @@ router = APIRouter(
 )
 
 @router.get('/')
-def list_all(db: SessionLocal = Depends(get_db)):
-    categorias = db.query(models.Categoria).all()
+def list_all(search: Optional[str] = "", db: SessionLocal = Depends(get_db)):
+    if search != "":
+        categorias = db.query(models.Categoria).filter(models.Categoria.descricao.contains(search)).all()
+    else:
+        categorias = db.query(models.Categoria).all()    
     return categorias
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
